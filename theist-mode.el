@@ -1,15 +1,25 @@
-;; This buffer is for text that is not saved, and for Lisp evaluation.
-;; To create a file, visit it with C-x C-f and enter text in its buffer.
+;;; theist-mode.el --- A better god mode for everyone. -*- lexical-binding: t -*-
 
+;;; Commentary:
+;; 
+
+;;; Code:
+
+;;;###autoload
 (defun theist-C-x (arg)
   (interactive "P")
   (setq prefix-arg arg)
-  (theist--keys-toplevel "\C-x" "x"))
+  (theist--keys-toplevel
+   "\C-x"
+   (char-to-string last-command-event)))
 
+;;;###autoload
 (defun theist-C-c (arg)
   (interactive "P")
   (setq prefix-arg arg)
-  (theist--keys-toplevel "\C-c" "c"))
+  (theist--keys-toplevel
+   "\C-c"
+   (char-to-string last-command-event)))
 
 (defvar theist-transformations
   '(identity theist-transform-C))
@@ -59,3 +69,7 @@
          (backspace "DEL")
          (return "RET")
          (t (char-to-string key)))))
+
+(provide 'theist-mode)
+
+;;; theist-mode.el ends here
