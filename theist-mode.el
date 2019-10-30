@@ -45,15 +45,20 @@
 
 (defun theist--maybe-key (read-key old-keys string)
   (let* ((new-keys (seq-concatenate 'vector old-keys read-key))
-         (local-action (lookup-key (current-local-map) new-keys t))
-         (action (if (not (or (null local-action) (numberp local-action)))
-                     local-action
-                   (lookup-key (current-global-map) new-keys t))))
-    ;; (message "%s" (key-description new-keys))
-    ;; (message "%s" action)
-    (if (or (null action) (numberp action))
-        nil
-      (fi-simulate-key new-keys) t)))
+         (action (theist--lookup-key
+                  new-keys
+                  (current-local-map)
+                  (current-global-map))))
+    (when action
+      (fi-simulate-key new-keys)
+      (prog1 t))))
+
+(defun theist--lookup-key (keyseq &rest keymaps)
+  (cl-dolist (keymap keymaps)
+    (when keymap
+      (let ((key (lookup-key keymap keyseq)))
+        (when (and key (not (numberp key)))
+          (cl-return key))))))
 
 (defun theist--sanitize-char (key)
   "Convert any single char to a key singleton vector."
