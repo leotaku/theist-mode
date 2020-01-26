@@ -52,21 +52,21 @@
 (defun theist-transform-C (key)
   (theist-transform-key "C-%s" key))
 
-(defun theist--keys-toplevel (old-keys old-string)
-  (unless (theist--keys-recursive old-keys old-string)
+(defun theist--keys-toplevel (prefix-keys prefix-string)
+  (unless (theist--keys-recursive prefix-keys prefix-string)
     (message "found no applicable key sequence")))
 
-(defun theist--keys-recursive (old-keys old-string)
-  (let* ((read-key (theist--sanitize-char (read-char (format "%s-" old-string))))
-         (new-string (concat old-string " " (key-description read-key))))
+(defun theist--keys-recursive (prefix-keys prefix-string)
+  (let* ((read-key (theist--sanitize-char (read-char (format "%s-" prefix-string))))
+         (new-string (concat prefix-string " " (key-description read-key))))
     (cl-loop
      for transform in theist-transformations
      do
-     (when (theist--maybe-key (funcall transform read-key) old-keys new-string)
+     (when (theist--maybe-key (funcall transform read-key) prefix-keys new-string)
        (cl-return t)))))
 
-(defun theist--maybe-key (read-key old-keys string)
-  (let* ((new-keys (seq-concatenate 'vector old-keys read-key))
+(defun theist--maybe-key (read-key prefix-keys string)
+  (let* ((new-keys (seq-concatenate 'vector prefix-keys read-key))
          (action (theist--lookup-key
                   new-keys
                   (current-local-map)
