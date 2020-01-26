@@ -29,6 +29,7 @@
 
 ;;;###autoload
 (defun theist-C-x (arg)
+  "Enter theism with `C-x' as the prefix."
   (interactive "P")
   (setq prefix-arg arg)
   (theist--keys-toplevel
@@ -37,6 +38,7 @@
 
 ;;;###autoload
 (defun theist-C-c (arg)
+  "Enter theism with `C-c' as the prefix."
   (interactive "P")
   (setq prefix-arg arg)
   (theist--keys-toplevel
