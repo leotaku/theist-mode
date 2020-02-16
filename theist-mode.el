@@ -54,50 +54,48 @@
 (defun theist-transform-C (key)
   (theist-transform-key "C-%s" key))
 
-(defun theist--keys-toplevel (prefix-keys prefix-string)
-  (unless (theist--keys-recursive prefix-keys prefix-string)
-    (message "found no applicable key sequence")))
-
-(defun theist--keys-recursive (prefix-keys prefix-string)
-  (let* ((read-key (theist--sanitize-char (read-char (format "%s-" prefix-string))))
+(defun theist--keys-toplevel (prefix-keys prefix-string &optional recursive)
+  (let* ((read-key (vector (read-char (format "%s-" prefix-string))))
          (new-string (concat prefix-string " " (key-description read-key))))
     (cl-loop
      for transform in theist-transformations
      do
-     (when (theist--maybe-key (funcall transform read-key) prefix-keys new-string)
-       (cl-return t)))))
+     (let* ((key (funcall transform read-key))
+            (keys (vconcat prefix-keys key))
+            (action (theist--lookup-global keys)))
+       (cond
+        ((keymapp action)
+         (if (not recursive)
+             (theist--fi-simulate-key keys)
+           (if (theist--keys-recursive keys new-string)
+               (cl-return t)
+             (cl-return nil))))
+        ((functionp action)
+         (theist--fi-simulate-key keys)
+         (cl-return t)))))))
 
-(defun theist--maybe-key (read-key prefix-keys string)
-  (let* ((new-keys (seq-concatenate 'vector prefix-keys read-key))
-         (action (theist--lookup-key
-                  new-keys
-                  (current-local-map)
-                  (current-global-map))))
-    (when action
-      (fi-simulate-key new-keys)
-      (prog1 t))))
-
-(defun theist--lookup-key (keyseq &rest keymaps)
+(defun theist--lookup-key (keyseq keymaps)
   (cl-dolist (keymap keymaps)
     (when keymap
       (let ((key (lookup-key keymap keyseq)))
         (when (and key (not (numberp key)))
           (cl-return key))))))
 
-(defun theist--sanitize-char (key)
-  "Convert any single char to a key singleton vector."
-  (kbd (cl-case key
-         (tab "TAB")
-         (?\  "SPC")
-         (left "<left>")
-         (right "<right>")
-         (S-left "S-<left>")
-         (S-right "S-<right>")
-         (prior "<prior>")
-         (next "<next>")
-         (backspace "DEL")
-         (return "RET")
-         (t (char-to-string key)))))
+(defun theist--lookup-global (keys)
+  (let ((maps (list key-translation-map (current-active-maps t))))
+    (theist--lookup-key keys maps)))
+
+(defun theist--fi-simulate-key (key &optional keymap)
+  "Send fake keypresses for KEY in KEYMAP.
+KEY should be a key sequence in internal Emacs notation.
+
+Extracted from fi-emacs."
+  (let ((overriding-local-map (or keymap global-map)))
+    (setq unread-command-events
+          (nconc
+           (mapcar (lambda (ev) (cons t ev))
+                   (listify-key-sequence key))
+           unread-command-events))))
 
 (provide 'theist-mode)
 
