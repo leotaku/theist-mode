@@ -33,7 +33,7 @@
   (interactive "P")
   (setq prefix-arg arg)
   (theist-run
-   "\C-x"
+   (kbd "C-x")
    (char-to-string last-command-event)))
 
 ;;;###autoload
@@ -42,7 +42,7 @@
   (interactive "P")
   (setq prefix-arg arg)
   (theist-run
-   "\C-c"
+   (kbd "C-c")
    (char-to-string last-command-event)))
 
 ;;;###autoload
