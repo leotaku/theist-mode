@@ -64,7 +64,7 @@ Returns an internal key description."
 
 (defun theist-transform-C (key)
   "Transform the given KEY to C-KEY."
-  (theist-transform-key "C-%s" key))
+  (theist-format-key "C-%s" key))
 
 (defun theist--keys-toplevel (prefix-keys prefix-string &optional recursive)
   (let* ((read-key (vector (read-char (format "%s-" prefix-string))))
