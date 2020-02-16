@@ -77,11 +77,12 @@ Returns an internal key description."
             (action (theist--lookup-global keys)))
        (cond
         ((keymapp action)
-         (if (not recursive)
-             (theist--fi-simulate-key keys)
-           (if (theist--keys-recursive keys new-string)
-               (cl-return t)
-             (cl-return nil))))
+         (if recursive
+             (if (theist--keys-recursive keys new-string)
+                 (cl-return t)
+               (cl-return nil))
+           (theist--fi-simulate-key keys)
+           (cl-return t)))
         ((functionp action)
          (theist--fi-simulate-key keys)
          (cl-return t)))))))
