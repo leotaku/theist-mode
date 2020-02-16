@@ -32,7 +32,7 @@
   "Enter theism with `C-x' as the prefix."
   (interactive "P")
   (setq prefix-arg arg)
-  (theist--keys-toplevel
+  (theist-run
    "\C-x"
    (char-to-string last-command-event)))
 
@@ -41,17 +41,29 @@
   "Enter theism with `C-c' as the prefix."
   (interactive "P")
   (setq prefix-arg arg)
-  (theist--keys-toplevel
+  (theist-run
    "\C-c"
    (char-to-string last-command-event)))
 
-(defvar theist-transformations
-  '(identity theist-transform-C))
+;;;###autoload
+(defun theist-run (prefix-keys prefix-string)
+  "Enter theism with PREFIX-KEYS as the prefix key sequence and
+PREFIX-STRING as the prefix displayed in the minibuffer.
+Transformations are read from the `theist-transformations' special variable."
+  (unless (theist--keys-toplevel prefix-keys prefix-string)
+    (message "found no applicable key sequence")))
 
-(defun theist-transform-key (format key)
+(defvar theist-transformations
+  '(identity theist-transform-C)
+  "Transformations for `theist-run' keys.")
+
+(defun theist-format-key (format key)
+  "Format the given internal KEY description with FORMAT.
+Returns an internal key description."
   (kbd (format format (key-description key))))
 
 (defun theist-transform-C (key)
+  "Transform the given KEY to C-KEY."
   (theist-transform-key "C-%s" key))
 
 (defun theist--keys-toplevel (prefix-keys prefix-string &optional recursive)
