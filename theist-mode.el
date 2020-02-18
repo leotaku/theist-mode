@@ -78,7 +78,7 @@ Returns an internal key description."
        (cond
         ((keymapp action)
          (if recursive
-             (if (theist--keys-recursive keys new-string)
+             (if (theist--keys-toplevel keys new-string t)
                  (cl-return t)
                (cl-return nil))
            (theist--fi-simulate-key keys)
