@@ -87,16 +87,10 @@ Returns an internal key description."
          (theist--fi-simulate-key keys)
          (cl-return t)))))))
 
-(defun theist--lookup-key (keyseq keymaps)
-  (cl-dolist (keymap keymaps)
-    (when keymap
-      (let ((key (lookup-key keymap keyseq)))
-        (when (and key (not (numberp key)))
-          (cl-return key))))))
-
 (defun theist--lookup-global (keys)
-  (let ((maps (list key-translation-map (current-active-maps t))))
-    (theist--lookup-key keys maps)))
+  (let* ((maps (cons key-translation-map (current-active-maps t)))
+         (map (make-composed-keymap maps)))
+    (lookup-key map keys)))
 
 (defun theist--fi-simulate-key (key &optional keymap)
   "Send fake keypresses for KEY in KEYMAP.
