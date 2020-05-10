@@ -1,4 +1,6 @@
 # theist-mode.el
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fleotaku%2Ftheist-mode.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fleotaku%2Ftheist-mode?ref=badge_shield)
+
 
 `theist-mode` is intended to be an improvement over the unmantained `god-mode` for Emacs.
 
@@ -41,3 +43,7 @@ And bind them locally or globally.
   ...)
 ```
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fleotaku%2Ftheist-mode.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fleotaku%2Ftheist-mode?ref=badge_large)
