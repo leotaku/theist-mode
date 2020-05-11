@@ -30,7 +30,7 @@ You can also define your own key transformations.
   (theist-format-key "C-%s" key))
 ```
 
-Binding these globally or locally in your commands allows you to customize how keys are interpreted.
+Binding `theist-transformations` globally or locally in your commands allows you to customize how keys are interpreted.
 
 ``` emacs-lisp
 (setq theist-transformations
