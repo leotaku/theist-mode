@@ -1,13 +1,13 @@
 ;;; theist-mode.el --- A simpler alternative to god-mode -*- lexical-binding: t -*-
 
+;; Copyright (C) 2019-2020 Leo Gaskin
+
 ;; Author: Leo Gaskin <leo.gaskin@brg-feldkirchen.at>
 ;; Created: 03 July 2019
 ;; Homepage: https://github.com/leotaku/theist-mode
 ;; Keywords: god-mode, configuration, lisp
 ;; Package-Version: 0.1.0
 ;; Package-Requires: ((emacs "25.1"))
-
-;; This file is not part of GNU Emacs.
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
