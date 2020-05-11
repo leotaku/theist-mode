@@ -31,18 +31,14 @@
   "Enter theism with `C-x' as the prefix."
   (interactive "P")
   (setq prefix-arg arg)
-  (theist-run
-   (kbd "C-x")
-   (char-to-string last-command-event)))
+  (theist-run (kbd "C-x") "x"))
 
 ;;;###autoload
 (defun theist-C-c (arg)
   "Enter theism with `C-c' as the prefix."
   (interactive "P")
   (setq prefix-arg arg)
-  (theist-run
-   (kbd "C-c")
-   (char-to-string last-command-event)))
+  (theist-run (kbd "C-c") "c"))
 
 ;;;###autoload
 (defun theist-run (prefix-keys prefix-string)
