@@ -6,11 +6,11 @@
 
 Simply bind `theist-C-x` and/or `theist-C-c` in your modal maps.
 
-The author uses them in their [modalka](https://github.com/mrkkrp/modalka), [lispy](https://github.com/abo-abo/lispy) and [worf](https://github.com/abo-abo/worf) maps.
+The author uses these commands in their [modalka](https://github.com/mrkkrp/modalka), [lispy](https://github.com/abo-abo/lispy) and [worf](https://github.com/abo-abo/worf) maps.
 
 # Customization
 
-You can define your own theist commands easily.
+You can define your own theist commands easily, for example:
 
 ```emacs-lisp
 (defun theist-C-c (arg)
@@ -22,7 +22,7 @@ You can define your own theist commands easily.
    (char-to-string last-command-event)))
 ```
 
-You can also define your own transformations.
+You can also define your own key transformations.
 
 ``` emacs-lisp
 (defun theist-transform-C (key)
@@ -30,7 +30,7 @@ You can also define your own transformations.
   (theist-format-key "C-%s" key))
 ```
 
-And bind them locally or globally.
+Binding these globally or locally in your commands allows you to customize how keys are interpreted.
 
 ``` emacs-lisp
 (setq theist-transformations
