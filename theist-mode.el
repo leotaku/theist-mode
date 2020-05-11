@@ -46,7 +46,7 @@
 PREFIX-STRING as the prefix displayed in the minibuffer.
 Transformations are read from the `theist-transformations' special variable."
   (unless (theist--keys-toplevel prefix-keys prefix-string)
-    (message "found no applicable key sequence")))
+    (message "No applicable key sequence found")))
 
 (defvar theist-transformations
   '(identity theist-transform-C)
@@ -78,7 +78,7 @@ Returns an internal key description."
                (cl-return nil))
            (theist--fi-simulate-key keys)
            (cl-return t)))
-        ((functionp action)
+        ((not (null action))
          (theist--fi-simulate-key keys)
          (cl-return t)))))))
 
