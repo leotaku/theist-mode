@@ -24,6 +24,15 @@
 
 ;;; Commentary:
 
+;; The theist-mode package provides some simplistic utilities for
+;; automatically making existing keybindings more ergonomic.  It is
+;; heavily inspired by the now unmaintained god-mode, but has a higher
+;; focus on simplicity and easy integration with existing modal
+;; keybinding packages (e.g. evil, modalka, lispy, worf).
+;;
+;; Please consult README.md from the package repository and elisp
+;; docstrings for more thorough documentation.
+
 ;;; Code:
 
 ;;;###autoload
