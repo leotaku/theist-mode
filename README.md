@@ -1,12 +1,13 @@
 # theist-mode.el
 
-`theist-mode` is intended to be an improvement over the unmantained `god-mode` for Emacs.
+The theist-mode package provides some simplistic utilities for automatically making existing keybindings more ergonomic.
+It is heavily inspired by the now unmaintained god-mode, but has a higher focus on simplicity and easy integration with existing modal keybinding packages (e.g. evil, modalka, lispy, worf).
 
 ## Usage
 
 Simply bind `theist-C-x` and/or `theist-C-c` in your modal maps.
 
-The author uses these commands in their [modalka](https://github.com/mrkkrp/modalka), [lispy](https://github.com/abo-abo/lispy) and [worf](https://github.com/abo-abo/worf) maps.
+For example, the I personally bind these commands in my [modalka](https://github.com/mrkkrp/modalka), [lispy](https://github.com/abo-abo/lispy) and [worf](https://github.com/abo-abo/worf), but also dired, ibuffer and [magit](https://github.com/magit/magit) keymaps.
 
 ## Customization
 
@@ -24,7 +25,7 @@ You can define your own theist commands easily, for example:
 
 You can also define your own key transformations.
 
-``` emacs-lisp
+```emacs-lisp
 (defun theist-transform-C (key)
   "Transform the given KEY to C-KEY."
   (theist-format-key "C-%s" key))
@@ -32,7 +33,7 @@ You can also define your own key transformations.
 
 Binding `theist-transformations` globally or locally in your commands allows you to customize how keys are interpreted.
 
-``` emacs-lisp
+```emacs-lisp
 (setq theist-transformations
       '(identity theist-transform-C))
 
