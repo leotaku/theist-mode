@@ -37,23 +37,25 @@
 
 ;;;###autoload
 (defun theist-C-x (arg)
-  "Enter theism with `C-x' as the prefix."
+  "Enter theism with `C-x' as the prefix.
+ARG is treated as a prefix argument."
   (interactive "P")
   (setq prefix-arg arg)
   (theist-run (kbd "C-x") "x"))
 
 ;;;###autoload
 (defun theist-C-c (arg)
-  "Enter theism with `C-c' as the prefix."
+  "Enter theism with `C-c' as the prefix.
+ARG is treated as a prefix argument."
   (interactive "P")
   (setq prefix-arg arg)
   (theist-run (kbd "C-c") "c"))
 
 ;;;###autoload
 (defun theist-run (prefix-keys prefix-string)
-  "Enter theism with PREFIX-KEYS as the prefix key sequence and
-PREFIX-STRING as the prefix displayed in the minibuffer.
-Transformations are read from the `theist-transformations' special variable."
+  "Enter theism with the given PREFIX-KEYS and PREFIX-STRING.
+Key transformations are read from the `theist-transformations'
+special variable."
   (unless (theist--keys-toplevel prefix-keys prefix-string)
     (message "No applicable key sequence found")))
 
@@ -71,6 +73,10 @@ Returns an internal key description."
   (theist-format-key "C-%s" key))
 
 (defun theist--keys-toplevel (prefix-keys prefix-string &optional recursive)
+  "Query the user for key input and execute a key-press.
+PREFIX-KEYS is used as the initial key sequence, while
+PREFIX-STRING is displayed to the user.  If RECURSIVE is non-nil
+repeat this process until an actual command is found."
   (let* ((read-key (vector (read-char (format "%s-" prefix-string))))
          (new-string (concat prefix-string " " (key-description read-key))))
     (cl-loop
@@ -91,13 +97,14 @@ Returns an internal key description."
          (theist--fi-simulate-key keys)
          (cl-return t)))))))
 
-(defun theist--lookup-global (keys)
+(defun theist--lookup-global (key)
+  "Lookup KEY in all currently active maps."
   (let* ((maps (cons key-translation-map (current-active-maps t)))
          (map (make-composed-keymap maps)))
-    (lookup-key map keys)))
+    (lookup-key map key)))
 
 (defun theist--fi-simulate-key (key &optional keymap)
-  "Send fake keypresses for KEY in KEYMAP.
+  "Send fake key-presses for KEY in KEYMAP.
 KEY should be a key sequence in internal Emacs notation.
 
 Extracted from fi-emacs."
