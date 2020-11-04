@@ -7,7 +7,7 @@ It is heavily inspired by the now unmaintained god-mode, but has a higher focus 
 
 Simply bind `theist-C-x` and/or `theist-C-c` in your modal maps.
 
-For example, the I personally bind these commands in my [modalka](https://github.com/mrkkrp/modalka), [lispy](https://github.com/abo-abo/lispy) and [worf](https://github.com/abo-abo/worf), but also dired, ibuffer and [magit](https://github.com/magit/magit) keymaps.
+For example, I personally bind either both or one of these commands in my [modalka](https://github.com/mrkkrp/modalka), [lispy](https://github.com/abo-abo/lispy) and [worf](https://github.com/abo-abo/worf), but also dired, ibuffer and [magit](https://github.com/magit/magit) keymaps.
 
 ## Customization
 
