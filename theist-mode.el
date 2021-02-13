@@ -1,6 +1,6 @@
 ;;; theist-mode.el --- A simpler alternative to god-mode -*- lexical-binding: t -*-
 
-;; Copyright (C) 2019-2020 Leo Gaskin
+;; Copyright (C) 2019-2021 Leo Gaskin
 
 ;; Author: Leo Gaskin <leo.gaskin@brg-feldkirchen.at>
 ;; Created: 03 July 2019
