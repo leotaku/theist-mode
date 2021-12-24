@@ -84,7 +84,7 @@ repeat this process until an actual command is found."
      do
      (let* ((key (funcall transform read-key))
             (keys (vconcat prefix-keys key))
-            (action (theist--lookup-global keys)))
+            (action (key-binding key t nil (point))))
        (cond
         ((keymapp action)
          (if recursive
@@ -96,12 +96,6 @@ repeat this process until an actual command is found."
         ((not (null action))
          (theist--fi-simulate-key keys)
          (cl-return t)))))))
-
-(defun theist--lookup-global (key)
-  "Lookup KEY in all currently active maps."
-  (let* ((maps (cons key-translation-map (current-active-maps t)))
-         (map (make-composed-keymap maps)))
-    (lookup-key map key)))
 
 (defun theist--fi-simulate-key (key &optional keymap)
   "Send fake key-presses for KEY in KEYMAP.
