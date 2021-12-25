@@ -14,21 +14,21 @@ For example, I personally bind either both or one of these commands in my [modal
 You can define your own theist commands easily, for example:
 
 ```emacs-lisp
-(defun theist-C-c (arg)
-  "Enter theism with `C-c' as the prefix."
+(defun theist-C-c (&optional arg)
+  "Enter theism with `C-c' as the prefix.
+ARG is treated as a prefix argument."
   (interactive "P")
+  (setq this-command last-command)
   (setq prefix-arg arg)
-  (theist-run
-   (kbd "C-c")
-   (char-to-string last-command-event)))
+  (theist-run (kbd "C-c") "c"))
 ```
 
 You can also define your own key transformations.
 
 ```emacs-lisp
 (defun theist-transform-C (key)
-  "Transform the given KEY to C-KEY."
-  (theist-format-key "C-%s" key))
+  "Transform the given C-KEY to KEY."
+  (kbd (string-remove-prefix "C-" (key-description key))))
 ```
 
 Binding `theist-transformations` globally or locally in your commands allows you to customize how keys are interpreted.
