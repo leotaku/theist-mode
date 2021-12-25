@@ -72,8 +72,11 @@ of `theist-C-x' for further guidance.
 
 Key transformations are read from the `theist-transformations'
 special variable."
-  (set-transient-map (define-keymap prefix-string (theist-full-remap prefix-keys)))
-  (setq unread-command-events (nconc (listify-key-sequence prefix-string) unread-command-events)))
+  (let ((keys (listify-key-sequence prefix-string))
+        (map (make-sparse-keymap)))
+    (define-key map prefix-string (theist-full-remap prefix-keys))
+    (set-transient-map map)
+    (setq unread-command-events (nconc unread-command-events keys))))
 
 ;;;###autoload
 (defun theist-menu (prefix-keys)
