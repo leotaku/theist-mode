@@ -33,9 +33,6 @@
 ;; Please consult README.md from the package repository and elisp
 ;; docstrings for more thorough documentation.
 
-(eval-when-compile
-  (require 'cl-lib))
-
 ;;; Code:
 
 ;;;###autoload
