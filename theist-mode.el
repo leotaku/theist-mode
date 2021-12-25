@@ -100,12 +100,12 @@ special variable."
 (defun theist-remap (map &optional transform)
   "Generate a new keymap from MAP by transforming all keys in MAP
 and its child keymaps using TRANSFORM."
-  (let ((transform (or transform #'identity))
-        (target (make-sparse-keymap))
-        (fn (lambda (key def)
-              (let ((key (funcall transform (vector key)))
-                    (def (if (keymapp def) (theist-remap def transform) def)))
-                (define-key target key def)))))
+  (let* ((transform (or transform #'identity))
+         (target (make-sparse-keymap))
+         (fn (lambda (key def)
+               (let ((key (funcall transform (vector key)))
+                     (def (if (keymapp def) (theist-remap def transform) def)))
+                 (define-key target key def)))))
     (prog1 target
       (map-keymap fn (keymap-canonicalize map)))))
 
