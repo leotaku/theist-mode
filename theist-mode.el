@@ -33,84 +33,88 @@
 ;; Please consult README.md from the package repository and elisp
 ;; docstrings for more thorough documentation.
 
-(eval-when-compile
-  (require 'cl-lib))
-
 ;;; Code:
 
 ;;;###autoload
-(defun theist-C-x (arg)
+(defun theist-C-x (&optional arg)
   "Enter theism with `C-x' as the prefix.
 ARG is treated as a prefix argument."
   (interactive "P")
+  (setq this-command last-command)
   (setq prefix-arg arg)
   (theist-run (kbd "C-x") "x"))
 
 ;;;###autoload
-(defun theist-C-c (arg)
+(defun theist-C-c (&optional arg)
   "Enter theism with `C-c' as the prefix.
 ARG is treated as a prefix argument."
   (interactive "P")
+  (setq this-command last-command)
   (setq prefix-arg arg)
   (theist-run (kbd "C-c") "c"))
 
 ;;;###autoload
 (defun theist-run (prefix-keys prefix-string)
   "Enter theism with the given PREFIX-KEYS and PREFIX-STRING.
+
+This allows entering theism from any function call, but has a few
+disadvantages as a result of abusing `unread-command-events'.  As
+such, for advanced users, it is recommended to bind the result of
+the corresponding `theist-menu' call whenever possible.
+
+When not using the predefined commands, it is recommended to set
+`prefix-arg' to the argument given to calling command, as well as
+`this-command' to `previous-command'.  Consult the implementation
+of `theist-C-x' for further guidance.
+
 Key transformations are read from the `theist-transformations'
 special variable."
-  (unless (theist--keys-toplevel prefix-keys prefix-string)
-    (message "No applicable key sequence found")))
+  (let ((keys (listify-key-sequence prefix-string))
+        (map (make-sparse-keymap)))
+    (define-key map prefix-string (theist-full-remap prefix-keys))
+    (set-transient-map map)
+    (setq unread-command-events (nconc unread-command-events keys))))
+
+;;;###autoload
+(defun theist-menu (prefix-keys)
+  "Return an extended menu item to enter theism for PREFIX-KEYS.
+
+This works only when the result of this function is bound
+directly to a key.  When theism has to be entered from a function
+call, prefer `theist-run'.
+
+Key transformations are read from the `theist-transformations'
+special variable."
+  `(menu-item ,(format "theist-%s" (key-description prefix-keys)) ,prefix-keys
+              :filter (lambda (&optional _)
+                        (theist-full-remap ,prefix-keys))))
 
 (defvar theist-transformations
   '(identity theist-transform-C)
-  "Transformations for `theist-run' keys.")
-
-(defun theist-format-key (format key)
-  "Format the given internal KEY description with FORMAT.
-Returns an internal key description."
-  (kbd (format format (key-description key))))
+  "Transformations for `theist-map' keys.")
 
 (defun theist-transform-C (key)
-  "Transform the given KEY to C-KEY."
-  (theist-format-key "C-%s" key))
+  "Transform the given C-KEY to KEY."
+  (kbd (string-remove-prefix "C-" (key-description key))))
 
-(defun theist--keys-toplevel (prefix-keys prefix-string &optional recursive)
-  "Query the user for key input and execute a key-press.
-PREFIX-KEYS is used as the initial key sequence, while
-PREFIX-STRING is displayed to the user.  If RECURSIVE is non-nil
-repeat this process until an actual command is found."
-  (let* ((read-key (vector (read-char (format "%s-" prefix-string))))
-         (new-string (concat prefix-string " " (key-description read-key))))
-    (cl-loop
-     for transform in theist-transformations
-     do
-     (let* ((key (funcall transform read-key))
-            (keys (vconcat prefix-keys key))
-            (action (key-binding key t nil (point))))
-       (cond
-        ((keymapp action)
-         (if recursive
-             (if (theist--keys-toplevel keys new-string t)
-                 (cl-return t)
-               (cl-return nil))
-           (theist--fi-simulate-key keys)
-           (cl-return t)))
-        ((not (null action))
-         (theist--fi-simulate-key keys)
-         (cl-return t)))))))
+(defun theist-remap (map &optional transform)
+  "Generate a new keymap from MAP by transforming all keys in MAP
+and its child keymaps using TRANSFORM."
+  (let* ((transform (or transform #'identity))
+         (target (make-sparse-keymap))
+         (fn (lambda (key def)
+               (let ((key (funcall transform (vector key)))
+                     (def (if (keymapp def) (theist-remap def transform) def)))
+                 (define-key target key def)))))
+    (prog1 target
+      (map-keymap fn (keymap-canonicalize map)))))
 
-(defun theist--fi-simulate-key (key &optional keymap)
-  "Send fake key-presses for KEY in KEYMAP.
-KEY should be a key sequence in internal Emacs notation.
-
-Extracted from fi-emacs."
-  (let ((overriding-local-map (or keymap global-map)))
-    (setq unread-command-events
-          (nconc
-           (mapcar (lambda (ev) (cons t ev))
-                   (listify-key-sequence key))
-           unread-command-events))))
+(defun theist-full-remap (prefix-keys)
+  "Generate a new keymap from the keymap bound to PREFIX-KEYS by
+transforming all keys in the keymap and its child keymaps using
+the transformations stored in `theist-transforms'."
+  (let ((fn (lambda (it) (theist-remap (key-binding prefix-keys t nil (point)) it))))
+    (apply #'make-composed-keymap (mapcar fn theist-transformations))))
 
 (provide 'theist-mode)
 
