@@ -77,8 +77,7 @@ special variable."
 
 ;;;###autoload
 (defun theist-menu (prefix-keys)
-  "Return an extended menu item that dynamically enters theism with
-the given PREFIX-KEYS.
+  "Return an extended menu item to enter theism for PREFIX-KEYS.
 
 This works only when the result of this function is bound
 directly to a key.  When theism has to be entered from a function
