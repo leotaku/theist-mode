@@ -37,7 +37,7 @@
 
 ;;;###autoload
 (defun theist-C-x (&optional arg)
-  "Enter theism with `C-x' as the prefix.
+  "Enter theism with \\`C-x' as the prefix.
 ARG is treated as a prefix argument."
   (interactive "P")
   (setq this-command last-command)
@@ -46,7 +46,7 @@ ARG is treated as a prefix argument."
 
 ;;;###autoload
 (defun theist-C-c (&optional arg)
-  "Enter theism with `C-c' as the prefix.
+  "Enter theism with \\`C-c' as the prefix.
 ARG is treated as a prefix argument."
   (interactive "P")
   (setq this-command last-command)
