@@ -71,8 +71,8 @@ Key transformations are read from the `theist-transformations'
 special variable."
   (let ((keys (listify-key-sequence (kbd prefix-string)))
         (map (make-sparse-keymap)))
-    (define-key map prefix-string (theist-full-remap prefix-keys))
-    (set-transient-map map)
+    (define-key map (kbd prefix-string) (theist-full-remap prefix-keys))
+    (set-transient-map map (lambda () (memq this-command '(which-key-C-h-dispatch))))
     (setq unread-command-events (nconc unread-command-events keys))))
 
 ;;;###autoload
