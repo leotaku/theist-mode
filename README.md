@@ -23,6 +23,12 @@ ARG is treated as a prefix argument."
   (theist-run (kbd "C-c") "c"))
 ```
 
+When binding directly to a keymap, you can also directly use `theist-menu`, which requires less boilerplate and will be more consistent in certain edge cases.
+
+```emacs-lisp
+(define-key some-mode-map (kbd "x") (theist-menu (kbd "C-x")))
+```
+
 You can also define your own key transformations.
 
 ```emacs-lisp
