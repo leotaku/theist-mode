@@ -11,7 +11,7 @@ For example, I personally bind either both or one of these commands in my [modal
 
 ## Customization
 
-You can define your own theist commands easily, for example:
+You can define your own theist commands easily.
 
 ```emacs-lisp
 (defun theist-C-c (&optional arg)
