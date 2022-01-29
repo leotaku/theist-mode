@@ -5,7 +5,7 @@
 ;; Author: Leo Gaskin <leo.gaskin@le0.gs>
 ;; Created: 03 July 2019
 ;; Homepage: https://github.com/leotaku/theist-mode
-;; Keywords: god-mode, configuration, lisp
+;; Keywords: emulation convenience modal god-mode
 ;; Package-Version: 0.1.0
 ;; Package-Requires: ((emacs "25.1"))
 
