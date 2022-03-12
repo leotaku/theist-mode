@@ -95,7 +95,11 @@ special variable."
 
 (defun theist-transform-C (key)
   "Transform the given C-KEY to KEY."
-  (kbd (string-remove-prefix "C-" (key-description key))))
+  (let ((desc (key-description key)))
+    (cond
+     ((equal desc "RET") (kbd "m"))
+     ((equal desc "TAB") (kbd "i"))
+     (t (kbd (string-remove-prefix "C-" desc))))))
 
 (defun theist-remap (map &optional transform)
   "Generate a new keymap from MAP by transforming all keys in MAP
