@@ -79,9 +79,9 @@ special variable."
 (defun theist-menu (prefix-keys)
   "Return an extended menu item to enter theism for PREFIX-KEYS.
 
-This works only when the result of this function is bound
-directly to a key.  When theism has to be entered from a function
-call, prefer `theist-run'.
+This invocation method can only work when the resulting menu will
+be bound directly to a key or event.  Whenever theism has to be
+entered from a function call, prefer `theist-run'.
 
 Key transformations are read from the `theist-transformations'
 special variable."
