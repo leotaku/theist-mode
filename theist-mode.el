@@ -118,7 +118,7 @@ and its child keymaps using TRANSFORM."
 transforming all keys in the keymap and its child keymaps using
 the transformations stored in `theist-transforms'."
   (let ((fn (lambda (it) (theist-remap (key-binding prefix-keys t nil (point)) it))))
-    (apply #'make-composed-keymap (mapcar fn theist-transformations))))
+    (make-composed-keymap (mapcar fn theist-transformations))))
 
 (provide 'theist-mode)
 
